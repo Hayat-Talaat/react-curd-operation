@@ -5,15 +5,23 @@ import firebaseDb from "../firebase";
 
 const Users = () => {
   let [userObjects, setUserObjects] = useState({});
+  let [users, setUsers] = useState([]);
   useEffect(() => {
-    firebaseDb.child("users").on("value", snapshot => {
-      if (snapshot.val() != null) {
-        console.log("snapshot", snapshot.val());
-        setUserObjects({
-          ...snapshot.val()
-        });
-      }
-    });
+    // firebaseDb.child("users").on("value", snapshot => {
+    //   if (snapshot.val() != null) {
+    //     console.log("snapshot", snapshot.val());
+    //     setUserObjects({
+    //       ...snapshot.val()
+    //     });
+    //   }
+    // });
+
+    const fetchData = async () => {
+      const db = firebaseDb.firestore();
+      const data = await db.collection("users").get();
+      setUsers(data.docs.map(doc => doc.data()));
+    };
+    fetchData();
   }, []);
 
   const addOrEdit = obj => {
@@ -48,20 +56,33 @@ const Users = () => {
                 <th>Action</th>
               </tr>
             </thead>
-                      <tbody>{Object.keys(userObjects).map(id => {
-                          return (
-                            <tr key={id}>
-                              <td>{userObjects[id].fullName}</td>
-                              <td>{userObjects[id].mobile}</td>
-                              <td>{userObjects[id].email}</td>
-                              <td>{userObjects[id].adress}</td>
-                              <td>
-                                <Button variant="primary">Edit</Button>
-                                <Button variant="danger">Delete</Button>
-                              </td>
-                            </tr>
-                          );
-            } )}</tbody>
+            <tbody>
+              {users.map(user => {
+                return (
+                  <tr key={user.fullName}>
+                    <td>{user.fullName}</td>
+                    <td>{user.mobile}</td>
+                    <td>{user.email}</td>
+                    <td>{user.adress}</td>
+                    <td>actions</td>
+                  </tr>
+                );
+              })}
+              {/* {Object.keys(userObjects).map(id => {
+                return (
+                  <tr key={id}>
+                    <td>{userObjects[id].fullName}</td>
+                    <td>{userObjects[id].mobile}</td>
+                    <td>{userObjects[id].email}</td>
+                    <td>{userObjects[id].adress}</td>
+                    <td>
+                      <Button variant="primary">Edit</Button>
+                      <Button variant="danger">Delete</Button>
+                    </td>
+                  </tr>
+                );
+              })} */}
+            </tbody>
           </Table>
         </Col>
       </Row>
