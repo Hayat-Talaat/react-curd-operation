@@ -6,6 +6,7 @@ import firebaseDb from "../firebase";
 const Users = () => {
   let [userObjects, setUserObjects] = useState({});
   let [users, setUsers] = useState([]);
+
   useEffect(() => {
     // firebaseDb.child("users").on("value", snapshot => {
     //   if (snapshot.val() != null) {
@@ -19,18 +20,38 @@ const Users = () => {
     const fetchData = async () => {
       const db = firebaseDb.firestore();
       const data = await db.collection("users").get();
-      setUsers(data.docs.map(doc => doc.data()));
+      console.log("data test", data);
+      setUsers(
+        data.docs.map(doc => {
+          return {
+            ...doc.data(),
+            id: doc.id
+          };
+        })
+      );
+      console.log("data test", data);
     };
+
     fetchData();
   }, []);
 
   const addOrEdit = obj => {
-    firebaseDb.child("users").push(obj, err => {
-      if (err) {
-        console.log("there is an error", err);
-      }
-    });
-    console.log("add or edit");
+    // firebaseDb.child("users").push(obj, err => {
+    //   if (err) {
+    //     console.log("there is an error", err);
+    //   }
+    // });
+    // console.log("add or edit");
+      
+            const db = firebaseDb.firestore();
+      db.collection("users").add(obj); 
+  };
+
+  const onDelete = id => {
+    const db = firebaseDb.firestore();
+    db.collection("users")
+      .doc(id)
+      .delete();
   };
 
   return (
@@ -64,10 +85,18 @@ const Users = () => {
                     <td>{user.mobile}</td>
                     <td>{user.email}</td>
                     <td>{user.adress}</td>
-                    <td>actions</td>
+                    <td>
+                      <Button
+                        variant="danger"
+                        onClick={() => onDelete(user.id)}
+                      >
+                        delete
+                      </Button>
+                    </td>
                   </tr>
                 );
               })}
+
               {/* {Object.keys(userObjects).map(id => {
                 return (
                   <tr key={id}>

@@ -1,53 +1,50 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 
-const UserForm = ( props ) => {
-//   const initialFieldValues = {
-//     fullName: "",
-//     mobile: "",
-//     email: "",
-//     adress: ""
-//   };
-    
-//   let [values, setValues] = useState(initialFieldValues);
-  
-    // const handleFormSubmit = e => {
-    //   e.preventDefault();
-    //   alert(`Submitting Name ${e.target.value}`);
-    //   console.log("data", values.fullName);
-    // };
+const UserForm = props => {
+  //   const initialFieldValues = {
+  //     fullName: "",
+  //     mobile: "",
+  //     email: "",
+  //     adress: ""
+  //   };
 
+  //   let [values, setValues] = useState(initialFieldValues);
 
-//   const handleInputChange = e => {
-//     var [name, value] = e.target.value
-//     setValues({
-//       ...values,
-//       [name]: value
-//     })
-//       console.log("name", e.target.value);
-//       setValues(e.target.value);
-//   };
-    
-    
+  // const handleFormSubmit = e => {
+  //   e.preventDefault();
+  //   alert(`Submitting Name ${e.target.value}`);
+  //   console.log("data", values.fullName);
+  // };
 
-    let [fName, setfName] = useState("");
-    let [mobile, setMobile] = useState("");
-    let [email, setEmail] = useState("");
-    let [adress, setAdress] = useState("");
+  //   const handleInputChange = e => {
+  //     var [name, value] = e.target.value
+  //     setValues({
+  //       ...values,
+  //       [name]: value
+  //     })
+  //       console.log("name", e.target.value);
+  //       setValues(e.target.value);
+  //   };
 
-    const submitValue = (e) => {
-        e.preventDefault();
+  let [fName, setfName] = useState("");
+  let [mobile, setMobile] = useState("");
+  let [email, setEmail] = useState("");
+  let [adress, setAdress] = useState("");
 
-        const initialFieldValues = {
-          fullName: fName,
-          mobile: mobile,
-          email: email,
-          adress: adress
-        };
-        
-        console.log("result", initialFieldValues);
-        props.addOrEdit(initialFieldValues);
+  const submitValue = e => {
+    e.preventDefault();
+
+    const initialFieldValues = {
+      fullName: fName,
+      mobile: mobile,
+      email: email,
+      adress: adress
     };
+
+    console.log("result", initialFieldValues);
+    props.addOrEdit(initialFieldValues);
+  };
 
   return (
     <>
